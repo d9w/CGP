@@ -15,17 +15,16 @@
 */
 
 
-/* */ 
+/* 
 #define DATA_IS_UNSIGNED_INT
-/*  */
+/*
 
 /* 
 #define DATA_IS_INT
 */
 
-/*  
+
 #define DATA_IS_DOUBLE
-*/
 
 
 /* this if statement defines the type of data that
@@ -38,7 +37,7 @@
 */ 
 
 /* this defines how the maximum constant inputs are input to cgp */
-#define MAX_NUM_CONSTANT_INPUTS 3
+#define MAX_NUM_CONSTANT_INPUTS 0
 
 #ifdef DATA_IS_UNSIGNED_INT
 		typedef unsigned long	data_type;
