@@ -1,0 +1,34 @@
+5         population_size
+6.0       per_cent_mutate
+100000      num_generations
+1        num_runs_total
+1         num_rows
+15        num_cols
+15        levels_back
+1	    progress_report
+5000      report_interval
+173156789 global_seed
+0         save_best_chrom
+0         run_from_chrom
+0         shrink_phenotype
+1  2      addition-0
+1  2      subtraction-1
+1  2      multiplication-2
+1  2      division-3
+0  2      addition-4
+0  2      subtraction-5
+0  2      multiplication-6
+0  2      division-7
+0  2      addition-8
+0  2      subtraction-9
+0  2      multiplication-10
+0  2      division-11
+0  2      addition-12
+0  2      subtraction-13
+0  2      multiplication-14
+0  2      division-15
+0  2      addition-16
+0  2      subtraction-17
+0  2      multiplication-18
+0  2      division-19
+

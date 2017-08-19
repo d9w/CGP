@@ -1,0 +1,34 @@
+5         population_size
+10.0       per_cent_mutate
+100000      num_generations
+1        num_runs_total
+1         num_rows
+10        num_cols
+10        levels_back
+1	    progress_report
+1000      report_interval
+173156789 global_seed
+0         save_best_chrom
+0         run_from_chrom
+0         shrink_phenotype
+0  0       '0'-0
+0  0       '1'-1
+0  1       a-2
+0  1       b-3
+0  1       !a-4
+0  1       !b-5
+1  2       ab-6
+1  2       a!b-7
+0  2       !ab-8
+0  2       !a!b-9
+1  2        a^b-10
+0  2       !a^b-11
+0  2       a|b-12
+0  2       a|!b-13
+0  2       !a|b-14
+0  2       !a|!b-15
+0  3       mux-16
+0  3       mux-17
+0  3       mux-18
+0  3       mux-19
+
