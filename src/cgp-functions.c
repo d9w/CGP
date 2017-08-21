@@ -747,6 +747,32 @@ void decode_cgp(int* chromosome,
 #endif
 
 
+#ifdef CLASSIFICATION_FITNESS
+double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
+                            int test)
+{
+	int i;
+	double fit = 0.0;
+  double max_output = -2.0;
+  int real_label; int out_label;
+
+	for (i = 0; i < num_outputs; i++)
+    {
+      if (cgp_outputs[i] > max_output) {
+        max_output = cgp_outputs[i];
+        out_label = i;
+      }
+      if (data_outputs[test][i] == 1.0) {
+        real_label = i;
+      }
+    }
+  if (out_label == real_label) {
+    fit = 1.0;
+  }
+
+	return fit;
+}
+#else
 /* evaluate the fitness at a single test point */
 double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS], 
 							int test)
@@ -762,8 +788,7 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
 
 	return fit;
 }
-
-
+#endif
 
 /* this is the EA fitness function
 */
@@ -787,6 +812,10 @@ double fitness(int* chromosome)
 	   fit = fit + evaluate_cgp_outputs(cgp_outputs,fitness_test);
 
    } 
+
+   #ifdef CLASSIFICATION_FITNESS
+   fit /= num_tests;
+   #endif
 
    /* if a perfect solution is found and shrink_phenotype is set to 1 
       this adds how many unused nodes there are to the fitness score.

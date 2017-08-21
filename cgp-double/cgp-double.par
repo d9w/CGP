@@ -1,12 +1,12 @@
 5         population_size
 10.0       per_cent_mutate
-1000      num_generations
+50000      num_generations
 1        num_runs_total
 1         num_rows
 20        num_cols
 20        levels_back
 1	    progress_report
-1000      report_interval
+10000      report_interval
 173156789 global_seed
 0         save_best_chrom
 0         run_from_chrom

@@ -68,9 +68,9 @@ int		  num_constant_inputs;
 #define MAX_OUTPUT_SIZE				MAX_NUM_INPUTS+MAX_NUM_CONSTANT_INPUTS+MAX_NUM_NODES+MAX_NUM_OUTPUTS
 #define MAX_NUM_RUNS				200
 #define ERROR_THRESHOLD				0.0001
-/*
-#define HITS_BASED_FITNESS
-*/		
+
+/* #define HITS_BASED_FITNESS		 */
+#define CLASSIFICATION_FITNESS
 
 #define MAX_NUM_CHROMOSOMES			1000  /* max population size */
 #define MAX_NUM_LETTERS				100
