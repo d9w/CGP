@@ -1,7 +1,7 @@
 5         population_size
 10.0       per_cent_mutate
 50000      num_generations
-1        num_runs_total
+2        num_runs_total
 1         num_rows
 20        num_cols
 20        levels_back
