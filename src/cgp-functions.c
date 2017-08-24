@@ -232,14 +232,15 @@ void read_data(char datafile[MAX_NUM_LETTERS])
     {
 		fscanf(fp,"%s %d",dummy,&num_inputs);
 		fscanf(fp,"%s %d",dummy,&num_outputs);
+		fscanf(fp,"%s %d",dummy,&num_trains);
 		fscanf(fp,"%s %d",dummy,&num_tests);
-		if (num_tests >= MAX_NUM_DATA)
+		if ((num_trains+num_tests) >= MAX_NUM_DATA)
 		{
 			printf("\nERROR. Too many test cases (in datafile)\n");
 			exit(0);
 		}
 
-		for (i = 0; i < num_tests; i++)
+		for (i = 0; i < (num_trains+num_tests); i++)
 		{
 			for(j=0;j<num_inputs;j++)
 				data_inputs[i][j] = myfscanf(fp);
@@ -282,6 +283,9 @@ void define_perfect(void)
 	#ifdef DATA_IS_DOUBLE
 		perfect = num_tests;
 	#endif
+  #ifdef CLASSIFICATION_FITNESS
+    perfect = 1.0;
+  #endif
 }
 
 
@@ -754,7 +758,7 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
 	int i;
 	double fit = 0.0;
   double max_output = -2.0;
-  int real_label; int out_label;
+  int real_label = -1; int out_label = -1;
 
 	for (i = 0; i < num_outputs; i++)
     {
@@ -792,7 +796,7 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
 
 /* this is the EA fitness function
 */
-double fitness(int* chromosome)
+double fitness(int* chromosome, int start, int stop)
 {
    int			fitness_test;
    int			num_nodes_to_process;
@@ -804,7 +808,7 @@ double fitness(int* chromosome)
    num_nodes_to_process = get_nodes_to_process(chromosome, nodes_to_process);
 
    /* apply all fitness tests */
-   for (fitness_test = 0; fitness_test < num_tests; fitness_test++)
+   for (fitness_test = start; fitness_test < stop; fitness_test++)
    {
 	   decode_cgp(chromosome, data_inputs, cgp_outputs, 
 				  num_nodes_to_process, nodes_to_process, fitness_test);
@@ -814,7 +818,7 @@ double fitness(int* chromosome)
    } 
 
    #ifdef CLASSIFICATION_FITNESS
-   fit /= num_tests;
+   fit /= (stop-start+1);
    #endif
 
    /* if a perfect solution is found and shrink_phenotype is set to 1 
@@ -963,7 +967,7 @@ double  get_best_chromosome(int** chromosomes,
 		if ((i == population_size -1) && (gen > 1))
 			fit = previous_best_fitness;
 		else
-			fit = fitness(chromosomes[i]);
+			fit = fitness(chromosomes[i], 0, num_trains);
 
 		if (fit > fitness_max)
 		{
@@ -1138,13 +1142,13 @@ void write_progress_info_to_file(char prog[MAX_NUM_LETTERS],
 						         int* best_chromosome)
 {
 	FILE* fp;
+  double test_accuracy;
+
+  test_accuracy = fitness(best_chromosome, num_trains, num_trains+num_tests);
 
     fp=fopen(prog,"a");
-    fprintf(fp,"\nGENERATION is %u     Best fitness is now %8.5lf",gen,best_fit);
-    fprintf(fp,"\nThe chromosome is\n");
+  fprintf(fp, "%d,%8.6lf,%8.6lf\n", gen, best_fit, test_accuracy);
     fclose(fp);
-    fprint_a_chromosome(best_chromosome,prog,1);
-	fprint_active_genes(best_chromosome,prog);
 }
 
 /* checks to see if the best fitness in the population has improved.
@@ -1207,7 +1211,7 @@ double  EA(int *gen_of_best, int* num_nodes_active, int run,
 									   previous_best_fit, gen);
 
 		check_if_improvement(best_fit, &previous_best_fit, &best_gen, gen, prog,
-							 best_chromosome);
+                         best_chromosome);
 
 		/* jump out of run if maximum fitness acheived */
 		if ((best_fit == perfect) && (shrink_phenotype == 0)) 

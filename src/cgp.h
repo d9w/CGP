@@ -60,7 +60,7 @@ int		  num_constant_inputs;
 #define MAX_NUM_COLS				200
 #define MAX_NUM_INPUTS				16
 #define MAX_NUM_OUTPUTS				256
-#define MAX_NUM_DATA				1024
+#define MAX_NUM_DATA				1000000
 #define MAX_NUM_NODES				MAX_NUM_ROWS*MAX_NUM_COLS
 #define MAX_NUM_NODES_PLUS_INPUTS	MAX_NUM_NODES+MAX_NUM_INPUTS+MAX_NUM_CONSTANT_INPUTS
 #define MAX_NUM_GENES_PER_NODE		4
@@ -107,7 +107,7 @@ int             allowed_functions[MAX_NUM_FUNCTIONS][2];
 
 
 /* data defining the computational problem read from .dat file */
-int             num_inputs,num_outputs,num_tests;
+int             num_inputs,num_outputs,num_trains,num_tests;
 data_type	    data_inputs[MAX_NUM_DATA][MAX_NUM_INPUTS];
 data_type	    data_outputs[MAX_NUM_DATA][MAX_NUM_INPUTS];
 
@@ -170,7 +170,7 @@ double correctness_test_boolean(data_type data_output,data_type cgp_output);
 double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS], 
 							int test);
 
-double fitness(int* chromosome);
+double fitness(int* chromosome, int start, int stop);
 
 void get_gene_limits(int column, int* limit_min, int* limit);
 
