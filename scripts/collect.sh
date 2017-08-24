@@ -1,8 +1,8 @@
 #!/bin/sh
 
 JOB_ID=$1 # script argument
-HOME=/users/p16043/wilson/cgp
-DATA=/tmpdir/$LOGNAME/dennis/data/cgp
+HOME=/users/p16043/wilson/CGP
+DATA=/tmpdir/$LOGNAME/data/CGP
 WORK_DIR=/tmpdir/wilson/dennis/$JOB_ID
 RESULTS_DIR=$HOME/results/$JOB_ID
 
