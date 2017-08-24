@@ -17,7 +17,7 @@
 
 /* 
 #define DATA_IS_UNSIGNED_INT
-/*
+*/
 
 /* 
 #define DATA_IS_INT
@@ -170,7 +170,7 @@ double correctness_test_boolean(data_type data_output,data_type cgp_output);
 double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS], 
 							int test);
 
-double fitness(int* chromosome, int start, int stop);
+double fitness(int* chromosome, int* num_nodes_active, int start, int stop);
 
 void get_gene_limits(int column, int* limit_min, int* limit);
 

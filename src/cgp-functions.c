@@ -83,7 +83,7 @@ void get_parameters(char parfile[MAX_NUM_LETTERS],char datafile[MAX_NUM_LETTERS]
 	for (i = 0; i < MAX_NUM_FUNCTIONS; i++)
 	{
 		/* number[] holds whether the function is used or not */ 
-		fscanf(fp,"%d%d%s",&number[i],&arity,&node_types[i]);
+		fscanf(fp,"%d%d%s",&number[i],&arity,node_types[i]);
 		if (number[i])
 		{
 			allowed_functions[num_functions][0]=i;
@@ -639,11 +639,11 @@ void decode_cgp(int* chromosome,
 	int			node_index;
 	data_type	in[MAX_NUM_GENES_PER_NODE];
 	data_type	output[MAX_OUTPUT_SIZE];
-	data_type constant_inputs[MAX_NUM_CONSTANT_INPUTS] = {1, 2, 3};
+	/* data_type constant_inputs[MAX_NUM_CONSTANT_INPUTS] = {}; */
 
 	/* load user defined constants into output array */
 	for (j = 0; j < num_constant_inputs; j++)
-		output[j] = constant_inputs[j];
+		output[j] = 0;//constant_inputs[j];
 
 	/* load test data into output array */
 	for (j = num_constant_inputs; j < num_inputs; j++)
@@ -796,7 +796,7 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
 
 /* this is the EA fitness function
 */
-double fitness(int* chromosome, int start, int stop)
+double fitness(int* chromosome, int* num_nodes_active, int start, int stop)
 {
    int			fitness_test;
    int			num_nodes_to_process;
@@ -806,6 +806,7 @@ double fitness(int* chromosome, int start, int stop)
    
    /* find out how many nodes there are in the phenotype */
    num_nodes_to_process = get_nodes_to_process(chromosome, nodes_to_process);
+   *num_nodes_active = num_nodes_to_process;
 
    /* apply all fitness tests */
    for (fitness_test = start; fitness_test < stop; fitness_test++)
@@ -960,6 +961,7 @@ double  get_best_chromosome(int** chromosomes,
 
 	fitness_max = -1.0;
     best_member = 0;
+    int num_nodes_active = 0;
 
     for (i = 0; i < population_size; i++)
     {
@@ -967,7 +969,7 @@ double  get_best_chromosome(int** chromosomes,
 		if ((i == population_size -1) && (gen > 1))
 			fit = previous_best_fitness;
 		else
-			fit = fitness(chromosomes[i], 0, num_trains);
+			fit = fitness(chromosomes[i], &num_nodes_active, 0, num_trains);
 
 		if (fit > fitness_max)
 		{
@@ -1143,11 +1145,12 @@ void write_progress_info_to_file(char prog[MAX_NUM_LETTERS],
 {
 	FILE* fp;
   double test_accuracy;
+  int num_nodes_active = 0;
 
-  test_accuracy = fitness(best_chromosome, num_trains, num_trains+num_tests);
+  test_accuracy = fitness(best_chromosome, &num_nodes_active, num_trains, num_trains+num_tests);
 
     fp=fopen(prog,"a");
-  fprintf(fp, "%d,%8.6lf,%8.6lf\n", gen, best_fit, test_accuracy);
+    fprintf(fp, "%d,%8.6lf,%8.6lf,%d\n", gen, best_fit, test_accuracy, num_nodes_active);
     fclose(fp);
 }
 
@@ -1191,12 +1194,12 @@ void write_result_of_EA_to_file(int run, int bgen, double best_fit,
 double  EA(int *gen_of_best, int* num_nodes_active, int run,
 		char prog[MAX_NUM_LETTERS])
 {
-	int		gen, best_gen;
+	int		gen=0; int best_gen=0;
 	int		nodes_to_process[MAX_NUM_NODES];
 	int**	chromosomes;
 	int*	best_chromosome;
-	double	best_fit, previous_best_fit = -1.0;
-
+	double best_fit = -1.0;
+  double previous_best_fit = -1.0;
 
 	chromosomes = create_2d_space(num_genes, population_size);
 	best_chromosome = create_1d_space(num_genes);

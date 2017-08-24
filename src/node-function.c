@@ -17,7 +17,7 @@ data_type  node_type(data_type in[MAX_NUM_GENES_PER_NODE],
                      int function_gene)
 {
    /* assumes 32 bit operations */
-   data_type result;
+   data_type result=0;
 
    if (function_gene==0)      /* constants */
       result=0;
@@ -71,7 +71,7 @@ data_type  node_type(data_type in[MAX_NUM_GENES_PER_NODE],
 data_type  node_type(data_type in[MAX_NUM_GENES_PER_NODE],
                      int function_gene)
 {
-   data_type result;
+   data_type result=0;
 
    switch(function_gene)
    {
@@ -101,7 +101,7 @@ data_type  node_type(data_type in[MAX_NUM_GENES_PER_NODE],
 data_type  node_type(data_type in[MAX_NUM_GENES_PER_NODE],
                      int function_gene)
 {
-   data_type result;
+   data_type result=0;
 
    switch(function_gene)
    {
