@@ -983,18 +983,27 @@ double  get_best_chromosome(int** chromosomes,
 	int		i;
     double	fitness_max, fit;	
     int		best_member;
+    int start, end;
 
 	fitness_max = -1.0;
     best_member = 0;
     int num_nodes_active = 0;
+    int window = num_trains/10.0
+
+    start = gen % num_trains;
+    end = start + window;
+    if (end > num_trains) {
+      start = gen % window;
+      end = start + window;
+    }
 
     for (i = 0; i < population_size; i++)
     {
 
-		if ((i == population_size -1) && (gen > 1))
-			fit = previous_best_fitness;
-		else
-			fit = fitness(chromosomes[i], &num_nodes_active, 0, num_trains);
+		/* if ((i == population_size -1) && (gen > 1)) */
+		/* 	fit = previous_best_fitness; */
+		/* else */
+			fit = fitness(chromosomes[i], &num_nodes_active, start, end);
 
 		if (fit > fitness_max)
 		{
@@ -1194,8 +1203,8 @@ void check_if_improvement(double best_fit, double* previous_best_fit, int* best_
 			write_progress_info_to_screen(gen,best_fit);
 			write_progress_info_to_file(prog, gen, best_fit, best_chromosome);
 		}
-		*best_gen = gen;				/* update the best generation */
-		*previous_best_fit = best_fit;	/* update previous best fitness */
+		/* *best_gen = gen;				/\* update the best generation *\/ */
+		/* *previous_best_fit = best_fit;	/\* update previous best fitness *\/ */
 	}
 }
 
