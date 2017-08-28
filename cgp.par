@@ -3,8 +3,8 @@
 50000      num_generations
 2        num_runs_total
 1         num_rows
-20        num_cols
-20        levels_back
+100        num_cols
+100        levels_back
 1	    progress_report
 10000      report_interval
 173156789 global_seed
