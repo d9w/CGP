@@ -60,7 +60,7 @@ int		  num_constant_inputs;
 #define MAX_NUM_COLS				200
 #define MAX_NUM_INPUTS				16
 #define MAX_NUM_OUTPUTS				256
-#define MAX_NUM_DATA				1000000
+#define MAX_NUM_DATA				2000000
 #define MAX_NUM_NODES				MAX_NUM_ROWS*MAX_NUM_COLS
 #define MAX_NUM_NODES_PLUS_INPUTS	MAX_NUM_NODES+MAX_NUM_INPUTS+MAX_NUM_CONSTANT_INPUTS
 #define MAX_NUM_GENES_PER_NODE		4
@@ -69,9 +69,10 @@ int		  num_constant_inputs;
 #define MAX_NUM_RUNS				200
 #define ERROR_THRESHOLD				0.0001
 
-/* #define HITS_BASED_FITNESS		 */
-/* #define CLASSIFICATION_FITNESS */
-#define SQ_ERROR_FITNESS
+/* #define TYPE_FITNESS */
+/* #define HITS_BASED_FITNESS */
+#define CLASSIFICATION_FITNESS
+/* #define MSE_FITNESS */
 
 #define MAX_NUM_CHROMOSOMES			1000  /* max population size */
 #define MAX_NUM_LETTERS				100
@@ -171,7 +172,7 @@ double correctness_test_boolean(data_type data_output,data_type cgp_output);
 double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS], 
 							int test);
 
-double fitness(int* chromosome, int* num_nodes_active, int start, int stop, int which_test);
+double fitness(int* chromosome, int* num_nodes_active, int start, int stop);
 
 void get_gene_limits(int column, int* limit_min, int* limit);
 
