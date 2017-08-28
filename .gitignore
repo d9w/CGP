@@ -54,3 +54,6 @@ dkms.conf
 # Log files
 *.prg
 *.chr
+
+# Data files
+*.dt
