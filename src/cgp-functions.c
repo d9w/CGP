@@ -286,6 +286,9 @@ void define_perfect(void)
   #ifdef CLASSIFICATION_FITNESS
     perfect = 1.0;
   #endif
+  #ifdef SQ_ERROR_FITNESS
+    perfect = 0.0;
+  #endif
 }
 
 
@@ -751,8 +754,29 @@ void decode_cgp(int* chromosome,
 #endif
 
 
-#ifdef CLASSIFICATION_FITNESS
+#ifdef SQ_ERROR_FITNESS
 double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
+                            int test)
+{
+  int i;
+  double fit = 0.0;
+  double diff = 0.0;
+  double sum_out = 0.0;
+
+  for (i = 0; i < num_outputs; i++) {
+    sum_out += cgp_outputs[i];
+  }
+  if (sum_out > 0) {
+    for (i = 0; i < num_outputs; i++) {
+      diff = pow(cgp_outputs[i]/sum_out-data_outputs[test][i], 2);
+      fit -= diff;
+    }
+  } else {
+    fit = -1.0;
+  }
+  return fit;
+}
+double max_classify_fitness(data_type cgp_outputs[MAX_NUM_OUTPUTS],
                             int test)
 {
 	int i;
@@ -796,7 +820,7 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
 
 /* this is the EA fitness function
 */
-double fitness(int* chromosome, int* num_nodes_active, int start, int stop)
+double fitness(int* chromosome, int* num_nodes_active, int start, int stop, int which_test)
 {
    int			fitness_test;
    int			num_nodes_to_process;
@@ -814,13 +838,19 @@ double fitness(int* chromosome, int* num_nodes_active, int start, int stop)
 	   decode_cgp(chromosome, data_inputs, cgp_outputs, 
 				  num_nodes_to_process, nodes_to_process, fitness_test);
 	   
-	   fit = fit + evaluate_cgp_outputs(cgp_outputs,fitness_test);
+#ifdef SQ_ERROR_FITNESS
+     if (which_test == 0) {
+       fit = fit + evaluate_cgp_outputs(cgp_outputs,fitness_test);
+     } else {
+       fit = fit + max_classify_fitness(cgp_outputs,fitness_test);
+     }
+#else
+     fit = fit + evaluate_cgp_outputs(cgp_outputs,fitness_test);
+#endif
 
    } 
 
-   #ifdef CLASSIFICATION_FITNESS
    fit /= (stop-start+1);
-   #endif
 
    /* if a perfect solution is found and shrink_phenotype is set to 1 
       this adds how many unused nodes there are to the fitness score.
@@ -969,7 +999,7 @@ double  get_best_chromosome(int** chromosomes,
 		if ((i == population_size -1) && (gen > 1))
 			fit = previous_best_fitness;
 		else
-			fit = fitness(chromosomes[i], &num_nodes_active, 0, num_trains);
+			fit = fitness(chromosomes[i], &num_nodes_active, 0, num_trains, 0);
 
 		if (fit > fitness_max)
 		{
@@ -1144,13 +1174,14 @@ void write_progress_info_to_file(char prog[MAX_NUM_LETTERS],
 						         int* best_chromosome)
 {
 	FILE* fp;
-  double test_accuracy;
+  double train_accuracy, test_accuracy;
   int num_nodes_active = 0;
 
-  test_accuracy = fitness(best_chromosome, &num_nodes_active, num_trains, num_trains+num_tests);
+  train_accuracy = fitness(best_chromosome, &num_nodes_active, 0, num_trains, 1);
+  test_accuracy = fitness(best_chromosome, &num_nodes_active, num_trains, num_trains+num_tests, 1);
 
     fp=fopen(prog,"a");
-    fprintf(fp, "%d,%8.6lf,%8.6lf,%d\n", gen, best_fit, test_accuracy, num_nodes_active);
+    fprintf(fp, "%d,%8.6lf,%8.6lf,%8.6lf,%d\n", gen, best_fit, train_accuracy, test_accuracy, num_nodes_active);
     fclose(fp);
 }
 
