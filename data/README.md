@@ -46,18 +46,18 @@
 
 #### Abalone
 + Filename: `abalone.dt`
-+ In, out, instances: 8, 1, 4177
-+ Modifications: Need to clean
++ In, out, train, test: 8, 1, 2785, 1392
++ Modifications: Sex converted (M=0.0, I=0.5, F=1.0), all columns normalized, shuffled
 + Source: UCI Machine Learning Repository
 
 #### Forest fires
 + Filename: `fires.dt`
-+ In, out, instances: 13, 1, 517
-+ Modifications: Need to clean
++ In, out, train, test: 13, 1, 345, 172
++ Modifications: Month & day converted to ints, all columns normalized, shuffled
 + Source: UCI Machine Learning Repository
 
 #### Wine quality
 + Filename: `quality.dt`
-+ In, out, instances: 12, 1, 4898
-+ Modifications: Need to clean
++ In, out, train, test: 11, 1, 4332, 2165
++ Modifications: White and red combined, all columns normalized, shuffled
 + Source: UCI Machine Learning Repository

@@ -761,18 +761,10 @@ double evaluate_cgp_outputs(data_type cgp_outputs[MAX_NUM_OUTPUTS],
   int i;
   double fit = 0.0;
   double diff = 0.0;
-  double sum_out = 0.0;
 
   for (i = 0; i < num_outputs; i++) {
-    sum_out += cgp_outputs[i];
-  }
-  if (sum_out > 0) {
-    for (i = 0; i < num_outputs; i++) {
-      diff = pow(cgp_outputs[i]/sum_out-data_outputs[test][i], 2);
-      fit -= diff;
-    }
-  } else {
-    fit = -1.0;
+    diff = pow(cgp_outputs[i]-data_outputs[test][i], 2);
+    fit -= diff;
   }
   return fit;
 }

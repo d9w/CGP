@@ -71,8 +71,8 @@ int		  num_constant_inputs;
 
 /* #define TYPE_FITNESS */
 /* #define HITS_BASED_FITNESS */
-#define CLASSIFICATION_FITNESS
-/* #define MSE_FITNESS */
+/* #define CLASSIFICATION_FITNESS */
+#define MSE_FITNESS
 
 #define MAX_NUM_CHROMOSOMES			1000  /* max population size */
 #define MAX_NUM_LETTERS				100
