@@ -988,7 +988,7 @@ double  get_best_chromosome(int** chromosomes,
 	fitness_max = -1.0;
     best_member = 0;
     int num_nodes_active = 0;
-    int window = num_trains/10.0
+    int window = num_trains/10.0;
 
     start = gen % num_trains;
     end = start + window;
